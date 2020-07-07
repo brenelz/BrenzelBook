@@ -9,13 +9,8 @@ const Nav = () => {
         </Link>
       </li>
       <li>
-        <Link href="/login">
-          <a>Login</a>
-        </Link>
-      </li>
-      <li>
-        <Link href="/signup">
-          <a>Signup</a>
+        <Link href="/api/login">
+          <a>Login / Signup</a>
         </Link>
       </li>
       <li>

@@ -2,11 +2,10 @@ import { createClient, Provider } from "urql";
 const client = createClient({
   url: "https://brenzelbook.herokuapp.com/v1/graphql",
   fetchOptions: () => {
-    const token = "";
     return token
       ? {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        headers: { Authorization: `Bearer ${token}` },
+      }
       : {};
   },
 });

@@ -12,6 +12,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.10.0",
+    "@auth0/nextjs-auth0": "^0.13.0",
     "graphql": "^15.2.0",
     "graphql-tag": "^2.10.3",
     "next": "^9.4.4",

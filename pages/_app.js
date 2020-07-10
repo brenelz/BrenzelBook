@@ -1,20 +1,30 @@
-import { createClient, Provider } from "urql";
-const client = createClient({
-  url: "https://brenzelbook.herokuapp.com/v1/graphql",
-  fetchOptions: () => {
-    return token
-      ? {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-      : {};
-  },
-});
+import { Provider } from "urql";
+
+import PageLayout from "../layouts/PageLayout";
+import client from "../utils/graphql-client";
+import { UserProvider, useFetchUser } from "../utils/user";
 
 function MyApp({ Component, pageProps }) {
+  const { user, loading } = useFetchUser();
+
+  if (user) {
+    client.fetchOptions = () => {
+      return user && user.idToken
+        ? {
+            headers: { Authorization: `Bearer ${user.idToken}` },
+          }
+        : {};
+    };
+  }
+
   return (
-    <Provider value={client}>
-      <Component {...pageProps} />
-    </Provider>
+    <UserProvider value={{ user, loading }}>
+      <Provider value={client}>
+        <PageLayout>
+          <Component {...pageProps} />
+        </PageLayout>
+      </Provider>{" "}
+    </UserProvider>
   );
 }
 

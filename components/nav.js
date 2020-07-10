@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useFetchUser } from "../utils/user";
 
 const Nav = () => {
+  const { user } = useFetchUser();
   return (
     <ul>
       <li>
@@ -9,9 +11,15 @@ const Nav = () => {
         </Link>
       </li>
       <li>
-        <Link href="/api/login">
-          <a>Login / Signup</a>
-        </Link>
+        {user ? (
+          <Link href="/dashboard">
+            <a>Dashboard</a>
+          </Link>
+        ) : (
+          <Link href="/api/login">
+            <a>Login / Signup</a>
+          </Link>
+        )}
       </li>
       <li>
         <Link href="/sellers">

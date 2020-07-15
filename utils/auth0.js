@@ -1,14 +1,14 @@
 import { initAuth0 } from "@auth0/nextjs-auth0";
 
 export default initAuth0({
-  domain: "dev-f1e3p6dp.us.auth0.com",
-  clientId: "yvD9zhHwC8vsU5G6xVVba3OyfIo2Z0F2",
-  clientSecret: "OzmxWw7-ZpxPfgZi-uQ3ik5bw3eEfzR9AXfN8k1goM0FHVEFoIX63k0CAST_T6CT",
+  domain: process.env.AUTH0_DOMAIN,
+  clientId: process.env.AUTH0_CLIENT_ID,
+  clientSecret: process.env.AUTH0_CLIENT_SECRET,
   scope: "openid profile",
-  redirectUri: "http://localhost:3000/api/callback",
-  postLogoutRedirectUri: "http://localhost:3000/",
+  redirectUri: process.env.AUTH0_REDIRECT_URI,
+  postLogoutRedirectUri: process.env.AUTH0_POST_LOGOUT_REDIRECT_URI,
   session: {
-    cookieSecret: "some-very-very-very-very-very-very-very-very-long-secret",
+    cookieSecret: process.env.AUTH0_COOKIE_SECRET,
     cookieLifetime: 60 * 60 * 8,
     storeIdToken: true,
   },

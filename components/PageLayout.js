@@ -1,4 +1,4 @@
-import Nav from "../components/Nav";
+import Nav from "./Nav";
 
 const PageLayout = ({ children }) => {
   return (

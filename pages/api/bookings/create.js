@@ -36,7 +36,11 @@ const QUERY_GET_SELLER_BY_SLUG = gql`
 const QUERY_ALREADY_BOOKED = gql`
   query($seller_id: Int!, $datetime: timestamptz!) {
     bookings(
-      where: { seller_id: { _eq: $seller_id }, datetime: { _eq: $datetime } }
+      where: {
+        seller_id: { _eq: $seller_id }
+        paid: { _eq: true }
+        datetime: { _eq: $datetime }
+      }
     ) {
       datetime
     }

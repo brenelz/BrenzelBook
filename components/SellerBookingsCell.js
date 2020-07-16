@@ -33,13 +33,9 @@ const SellerBookingsCell = ({ slug }) => {
   return (
     <ul>
       {seller.bookings?.map((booking) => (
-        <li key={seller.bookings.id}>
-          <Link href="/sellers/[slug]" as={`/sellers/${seller.slug}`}>
-            <a>
-              {seller.name} - ${(booking.cost / 100).toFixed(2)} -{" "}
-              {booking.datetime}
-            </a>
-          </Link>{" "}
+        <li key={booking.id}>
+          {seller.name} - ${(booking.cost / 100).toFixed(2)} -{" "}
+          {booking.datetime}
         </li>
       ))}
     </ul>

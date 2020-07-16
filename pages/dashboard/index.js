@@ -1,9 +1,6 @@
 import Link from "next/link";
 import { useFetchUser } from "../../utils/user";
 import UserBookingsCell from "../../components/UserBookingsCell";
-import SellerBookingsCell from "../../components/SellerBookingsCell";
-
-import { useQuery } from "urql";
 
 const Dashboard = () => {
   const { user, loading } = useFetchUser();

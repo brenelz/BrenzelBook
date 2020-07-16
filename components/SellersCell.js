@@ -27,7 +27,7 @@ const SellersCell = () => {
       {res.data.sellers.map((seller) => (
         <li key={seller.id}>
           <Link href="/sellers/[slug]" as={`/sellers/${seller.slug}`}>
-            {seller.name}
+            <a>{seller.name}</a>
           </Link>{" "}
           - ${(seller.cost / 100).toFixed(2)}
         </li>

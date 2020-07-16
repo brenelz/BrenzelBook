@@ -35,6 +35,7 @@ const MakeBookingForm = ({ slug, user, stripeUserId }) => {
         method: "post",
         body: JSON.stringify({
           booking_id: json.booking_id,
+          customer_email: user.user.name,
         }),
       });
       const checkout = await result.json();

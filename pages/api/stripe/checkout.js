@@ -37,9 +37,11 @@ export default async (req, res) => {
             quantity: 1,
           },
         ],
-        /*payment_intent_data: {
+        customer_email: json.customer_email,
+        client_reference_id: booking.id,
+        payment_intent_data: {
           application_fee_amount: booking.seller.cost / 100,
-        },*/
+        },
         success_url:
           process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT +
           "/sellers/" +

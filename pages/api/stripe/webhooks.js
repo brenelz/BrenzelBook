@@ -43,9 +43,10 @@ export default async (req, res) => {
     // Handle the checkout.session.completed event
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
+      console.log(session);
 
       const result = await hasuraAdminRequest(MUTATION_UPDATE_BOOKING, {
-        id: 3,
+        id: session.client_reference_id,
         checkout_session_id: session.id,
       });
     }

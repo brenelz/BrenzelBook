@@ -1,7 +1,7 @@
 import { Provider } from "urql";
 
 import PageLayout from "../components/PageLayout";
-import client from "../utils/graphql-client";
+import client from "../utils/graphqlClient";
 import { UserProvider, useFetchUser } from "../utils/user";
 
 function MyApp({ Component, pageProps }) {

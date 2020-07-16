@@ -1,31 +1,44 @@
 import gql from "graphql-tag";
-import client from "../../../utils/graphql-client";
-import { createRequest } from "urql";
-
-client.fetchOptions = () => {
-  return {
-    headers: { "X-Hasura-Admin-Secret": process.env.HASURA_SECRET },
-  };
-};
+import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 
 const MUTATION_INSERT_BOOKING = gql`
   mutation(
     $cost: Int!
     $datetime: timestamptz!
-    $user_id: Int!
-    $venue_id: Int!
-    $checkout_session_id: String!
+    $seller_id: Int!
+    $user_id: String!
   ) {
     insert_bookings(
       objects: {
         cost: $cost
         datetime: $datetime
+        seller_id: $seller_id
         user_id: $user_id
-        venue_id: $venue_id
-        checkout_session_id: $checkout_session_id
       }
     ) {
       affected_rows
+      returning {
+        id
+      }
+    }
+  }
+`;
+
+const QUERY_GET_SELLER_BY_SLUG = gql`
+  query($slug: String!) {
+    sellers(where: { slug: { _eq: $slug } }) {
+      id
+      cost
+    }
+  }
+`;
+
+const QUERY_ALREADY_BOOKED = gql`
+  query($seller_id: Int!, $datetime: timestamptz!) {
+    bookings(
+      where: { seller_id: { _eq: $seller_id }, datetime: { _eq: $datetime } }
+    ) {
+      datetime
     }
   }
 `;
@@ -33,5 +46,28 @@ const MUTATION_INSERT_BOOKING = gql`
 export default async (req, res) => {
   const json = JSON.parse(req.body);
 
-  return res.status(200).json({ success: true });
+  const { sellers } = await hasuraAdminRequest(QUERY_GET_SELLER_BY_SLUG, {
+    slug: json.slug,
+  });
+
+  const alreadyBooked = await hasuraAdminRequest(QUERY_ALREADY_BOOKED, {
+    seller_id: sellers[0].id,
+    datetime: json.datetime,
+  });
+
+  if (alreadyBooked.bookings.length > 0) {
+    return res.status(200).json({ success: false, message: "Already booked" });
+  }
+
+  const result = await hasuraAdminRequest(MUTATION_INSERT_BOOKING, {
+    cost: sellers[0].cost,
+    datetime: json.datetime,
+    seller_id: sellers[0].id,
+    user_id: json.userId,
+  });
+
+  return res.status(200).json({
+    success: true,
+    booking_id: result.insert_bookings.returning[0].id,
+  });
 };

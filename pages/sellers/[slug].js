@@ -22,7 +22,7 @@ const Sellers = () => {
           </Link>
         </p>
       ) : (
-        <MakeBookingForm slug={slug} />
+        <MakeBookingForm slug={slug} user={user} />
       )}
     </div>
   );

@@ -1,14 +1,13 @@
-import hasuraRequest from "../../../lib/hasuraRequest";
+import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 import gql from "graphql-tag";
 
-export const QUERY_VENUE_BY_SLUG = gql`
-  query($slug: String!) {
-    venues(where: { slug: { _eq: $slug } }) {
-      id
-      slug
-      name
-      cost
-      stripe_user_id
+export const QUERY_BOOKING_BY_ID = gql`
+  query($id: Int!) {
+    bookings(where: { id: { _eq: $id } }) {
+      seller {
+        name
+        cost
+      }
     }
   }
 `;
@@ -16,12 +15,13 @@ export const QUERY_VENUE_BY_SLUG = gql`
 export default async (req, res) => {
   const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
   const json = JSON.parse(req.body);
-  const slug = json.slug;
+  const booking_id = json.booking_id;
 
-  const { venues } = await hasuraRequest(QUERY_VENUE_BY_SLUG, {
-    slug,
+  const { bookings } = await hasuraAdminRequest(QUERY_BOOKING_BY_ID, {
+    id: booking_id,
   });
-  const venue = venues[0];
+
+  const booking = bookings[0];
 
   (async () => {
     const session = await stripe.checkout.sessions.create(
@@ -29,24 +29,20 @@ export default async (req, res) => {
         payment_method_types: ["card"],
         line_items: [
           {
-            name: venue.name,
-            amount: venue.cost,
+            name: booking.seller.name,
+            amount: booking.seller.cost,
             currency: "cad",
             quantity: 1,
           },
         ],
-        metadata: {
-          venue_id: venue.id,
-          datetime: json.datetime,
-        },
         payment_intent_data: {
-          application_fee_amount: venue.cost / 100,
+          application_fee_amount: booking.seller.cost / 100,
         },
         success_url: process.env.FRONTEND_ENDPOINT + "/bookings/success",
         cancel_url: process.env.FRONTEND_ENDPOINT + "/bookings/cancel",
       },
       {
-        stripeAccount: venue.stripe_user_id,
+        stripeAccount: "",
       }
     );
 

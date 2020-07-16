@@ -1,22 +1,52 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const MakeBookingForm = ({ slug }) => {
+const MakeBookingForm = ({ slug, user }) => {
   const [month, setMonth] = useState("01");
   const [day, setDay] = useState("01");
   const [year, setYear] = useState("2020");
   const [time, setTime] = useState("0:00");
   const [disabled, setDisabled] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     setDisabled(true);
     const response = await fetch("/api/bookings/create", {
       method: "POST",
       body: JSON.stringify({
         datetime: `${year}-${month}-${day} ${time}`,
         slug: slug,
+        userId: user.user.sub,
       }),
     });
+
+    const json = await response.json();
+
+    setDisabled(false);
+    if (json.success == false) {
+      setError(json.message);
+    } else {
+      const result = await fetch(`/api/stripe/checkout`, {
+        method: "post",
+        body: JSON.stringify({
+          booking_id: json.booking_id,
+        }),
+      });
+      const checkout = await result.json();
+
+      const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY, {
+        stripeAccount: "test123",
+      });
+
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: checkout.session.id,
+      });
+
+      if (error) {
+        console.error(error);
+      }
+    }
   };
 
   let timeoptions = [];
@@ -65,6 +95,8 @@ const MakeBookingForm = ({ slug }) => {
           {timeoptions}
         </select>
       </p>
+
+      {error ? <p>{error}</p> : null}
 
       <button type="submit" disabled={disabled}>
         Book

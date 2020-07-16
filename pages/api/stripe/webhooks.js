@@ -1,53 +1,17 @@
 import { buffer } from "micro";
-import hasuraRequest from "../../../lib/hasuraRequest";
+import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 import gql from "graphql-tag";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-const MUTATION_INSERT_BOOKING = gql`
-  mutation(
-    $cost: Int!
-    $datetime: timestamptz!
-    $user_id: Int!
-    $venue_id: Int!
-    $checkout_session_id: String!
-  ) {
-    insert_bookings(
-      objects: {
-        cost: $cost
-        datetime: $datetime
-        user_id: $user_id
-        venue_id: $venue_id
-        checkout_session_id: $checkout_session_id
-      }
+const MUTATION_UPDATE_BOOKING = gql`
+  mutation($id: Int!, $checkout_session_id: String!) {
+    update_bookings_by_pk(
+      pk_columns: { id: $id }
+      _set: { paid: true, checkout_session_id: $checkout_session_id }
     ) {
-      affected_rows
-    }
-  }
-`;
-
-const QUERY_VENUE_COST = gql`
-  query {
-    venues {
-      cost
-    }
-  }
-`;
-
-const MUTATION_INSERT_USER = gql`
-  mutation($email: String, $name: String, $stripe_customer_id: String!) {
-    insert_users(
-      objects: {
-        email: $email
-        name: $name
-        stripe_customer_id: $stripe_customer_id
-      }
-    ) {
-      affected_rows
-      returning {
-        id
-      }
+      id
     }
   }
 `;
@@ -80,25 +44,9 @@ export default async (req, res) => {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
 
-      stripe.customers.retrieve(session.customer, async function (
-        err,
-        customer
-      ) {
-        const userResult = await hasuraRequest(MUTATION_INSERT_USER, {
-          name: customer.name,
-          email: customer.email,
-          stripe_customer_id: session.customer,
-        });
-
-        const result = await hasuraRequest(MUTATION_INSERT_BOOKING, {
-          cost: session.display_items[0].amount,
-          datetime: session.metadata.datetime
-            ? session.metadata.datetime
-            : new Date(),
-          user_id: userResult.insert_users.returning[0].id,
-          venue_id: session.metadata.venue_id ? session.metadata.venue_id : 24,
-          checkout_session_id: session.id,
-        });
+      const result = await hasuraAdminRequest(MUTATION_UPDATE_BOOKING, {
+        id: 3,
+        checkout_session_id: session.id,
       });
     }
 

@@ -1,4 +1,4 @@
-import hasuraRequest from "../../../lib/hasuraRequest";
+import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 import gql from "graphql-tag";
 
 export default (req, res) => {
@@ -19,7 +19,7 @@ export default (req, res) => {
         saveAccountId(response, state);
 
         res.writeHead(302, {
-          Location: process.env.FRONTEND_ENDPOINT + "/admin",
+          Location: process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT + "/dashboard",
         });
         res.end();
       },
@@ -37,9 +37,9 @@ export default (req, res) => {
 
 const saveAccountId = async (response, email) => {
   var id = response.stripe_user_id;
-  const MUTATION_UPDATE_VENUE_STRIPE_USER_ID = gql`
+  const MUTATION_UPDATE_SELLER_STRIPE_USER_ID = gql`
     mutation($id: String!, $email: String!) {
-      update_venues(
+      update_sellers(
         _set: { stripe_user_id: $id }
         where: { email: { _eq: $email } }
       ) {
@@ -48,7 +48,7 @@ const saveAccountId = async (response, email) => {
     }
   `;
 
-  await hasuraRequest(MUTATION_UPDATE_VENUE_STRIPE_USER_ID, {
+  await hasuraAdminRequest(MUTATION_UPDATE_SELLER_STRIPE_USER_ID, {
     id,
     email,
   });

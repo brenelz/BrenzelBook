@@ -21,7 +21,7 @@ const Dashboard = () => {
             </Link>
           </p>
           <h2>Your Bookings</h2>
-          <UserBookingsCell userId={user.user.sub} />
+          <UserBookingsCell userId={user.user.sub} email={user.user.name} />
         </div>
       )}
     </div>

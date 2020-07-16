@@ -5,8 +5,10 @@ export const QUERY_BOOKING_BY_ID = gql`
   query($id: Int!) {
     bookings(where: { id: { _eq: $id } }) {
       seller {
+        slug
         name
         cost
+        stripe_user_id
       }
     }
   }
@@ -35,14 +37,20 @@ export default async (req, res) => {
             quantity: 1,
           },
         ],
-        payment_intent_data: {
+        /*payment_intent_data: {
           application_fee_amount: booking.seller.cost / 100,
-        },
-        success_url: process.env.FRONTEND_ENDPOINT + "/bookings/success",
-        cancel_url: process.env.FRONTEND_ENDPOINT + "/bookings/cancel",
+        },*/
+        success_url:
+          process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT +
+          "/sellers/" +
+          booking.seller.slug,
+        cancel_url:
+          process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT +
+          "/sellers/" +
+          booking.seller.slug,
       },
       {
-        stripeAccount: "",
+        stripeAccount: booking.seller.stripe_user_id,
       }
     );
 

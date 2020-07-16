@@ -8,7 +8,7 @@ export const QUERY_SELLER_BOOKINGS = gql`
       id
       name
       slug
-      bookings {
+      bookings(where: { paid: { _eq: true } }) {
         id
         cost
         datetime

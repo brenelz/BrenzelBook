@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
+import { loadStripe } from "@stripe/stripe-js";
 
-const MakeBookingForm = ({ slug, user }) => {
+const MakeBookingForm = ({ slug, user, stripeUserId }) => {
+  if (stripeUserId == null) {
+    return <p>Unable to make a booking at this time.</p>;
+  }
   const [month, setMonth] = useState("01");
   const [day, setDay] = useState("01");
   const [year, setYear] = useState("2020");
@@ -36,7 +40,7 @@ const MakeBookingForm = ({ slug, user }) => {
       const checkout = await result.json();
 
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY, {
-        stripeAccount: "test123",
+        stripeAccount: stripeUserId,
       });
 
       const { error } = await stripe.redirectToCheckout({

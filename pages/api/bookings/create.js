@@ -49,6 +49,7 @@ const QUERY_ALREADY_BOOKED = gql`
 
 export default async (req, res) => {
   const json = JSON.parse(req.body);
+  const datetime = json.datetime + "-05:00";
 
   const { sellers } = await hasuraAdminRequest(QUERY_GET_SELLER_BY_SLUG, {
     slug: json.slug,
@@ -56,16 +57,18 @@ export default async (req, res) => {
 
   const alreadyBooked = await hasuraAdminRequest(QUERY_ALREADY_BOOKED, {
     seller_id: sellers[0].id,
-    datetime: json.datetime,
+    datetime: datetime,
   });
 
   if (alreadyBooked.bookings.length > 0) {
-    return res.status(200).json({ success: false, message: "Already booked" });
+    return res
+      .status(200)
+      .json({ success: false, message: "Already booked. Please try again." });
   }
 
   const result = await hasuraAdminRequest(MUTATION_INSERT_BOOKING, {
     cost: sellers[0].cost,
-    datetime: json.datetime,
+    datetime: datetime,
     seller_id: sellers[0].id,
     user_id: json.userId,
   });

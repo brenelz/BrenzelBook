@@ -4,6 +4,8 @@ import PageLayout from "../components/PageLayout";
 import client from "../utils/graphqlClient";
 import { UserProvider, useFetchUser } from "../utils/user";
 
+import "../styles/tailwind.css";
+
 function MyApp({ Component, pageProps }) {
   const { user, loading } = useFetchUser();
 

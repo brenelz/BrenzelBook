@@ -29,14 +29,14 @@ const Contact = () => {
 
   return (
     <>
-      <div className="bg-white py-4 px-4 overflow-hidden">
+      <div className="bg-white py-8 px-4 overflow-hidden">
         <div className="relative max-w-xl mx-auto">
           <div className="text-center">
             <h2 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
               Contact
             </h2>
           </div>
-          <div className="mt-12">
+          <div className="mt-4">
             <form className="grid grid-cols-1 row-gap-6 sm:grid-cols-2 sm:col-gap-8">
               <div>
                 <label

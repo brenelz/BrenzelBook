@@ -10,7 +10,6 @@ export const QUERY_SELLER_BOOKINGS = gql`
       slug
       bookings(where: { paid: { _eq: true } }) {
         id
-        cost
         datetime
         user {
           name

@@ -1,6 +1,8 @@
 import { buffer } from "micro";
 import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 import gql from "graphql-tag";
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API);
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -12,6 +14,14 @@ const MUTATION_UPDATE_BOOKING = gql`
       _set: { paid: true, checkout_session_id: $checkout_session_id }
     ) {
       id
+      datetime
+      user {
+        name
+      }
+      seller {
+        name
+        email
+      }
     }
   }
 `;
@@ -43,12 +53,22 @@ export default async (req, res) => {
     // Handle the checkout.session.completed event
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
-      console.log(session);
 
       const result = await hasuraAdminRequest(MUTATION_UPDATE_BOOKING, {
         id: session.client_reference_id,
         checkout_session_id: session.id,
       });
+
+      const message = `A new booking has been made on BrenzelBook.<br /><br />${result.update_bookings_by_pk.user.name} at ${result.update_bookings_by_pk.datetime}`;
+
+      const msg = {
+        to: "brenleydueck@gmail.com",
+        from: "brenelz@gmail.com",
+        subject: `BrenzelBook Booking for ${result.update_bookings_by_pk.seller.name}`,
+        text: message,
+        html: message,
+      };
+      sgMail.send(msg);
     }
 
     // Return a response to acknowledge receipt of the event

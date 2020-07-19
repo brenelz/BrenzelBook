@@ -11,7 +11,7 @@ const Sellers = () => {
           </h2>
           <p>
             <span className="text-gray-500 text-sm">
-              click on a seller to view its bookings.
+              click on a seller to make or view its bookings.
             </span>
           </p>
         </div>

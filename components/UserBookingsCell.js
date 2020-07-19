@@ -32,7 +32,7 @@ export const QUERY_IS_SELLER = gql`
   }
 `;
 
-const UserBookingsCell = ({ userId, email }) => {
+const UserBookingsCell = ({ userId }) => {
   const [res, _] = useQuery({
     query: QUERY_USER_BOOKINGS,
     variables: {

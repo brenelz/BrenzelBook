@@ -1,6 +1,6 @@
 import { Provider } from "urql";
 
-import PageLayout from "../components/PageLayout";
+import PageLayout from "../layouts/PageLayout";
 import client from "../utils/graphqlClient";
 import { UserProvider, useFetchUser } from "../utils/user";
 

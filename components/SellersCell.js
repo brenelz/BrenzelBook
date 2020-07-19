@@ -10,6 +10,8 @@ export const QUERY_ALL_SELLERS = gql`
       email
       cost
       slug
+      description
+      email_visible
     }
   }
 `;
@@ -34,7 +36,12 @@ const SellersCell = () => {
                     <div className="flex items-center justify-between">
                       <div className="text-sm leading-5 font-medium text-indigo-600 truncate">
                         {seller.name}
-                        <span className="text-gray-600"> - {seller.email}</span>
+                        {seller.email_visible ? (
+                          <span className="text-gray-600">
+                            {" "}
+                            - {seller.email}
+                          </span>
+                        ) : null}
                       </div>
                       <div className="ml-2 flex-shrink-0 flex">
                         <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
@@ -42,6 +49,17 @@ const SellersCell = () => {
                         </span>
                       </div>
                     </div>
+                    {seller.description != null ? (
+                      <div className="mt-2 sm:flex sm:justify-between">
+                        <div className="sm:flex">
+                          <div className="mr-6 flex items-center text-sm leading-5 text-gray-500">
+                            {seller.description}
+                          </div>
+                          <div className="mt-2 flex items-center text-sm leading-5 text-gray-500 sm:mt-0"></div>
+                        </div>
+                        <div className="mt-2 flex items-center text-sm leading-5 text-gray-500 sm:mt-0"></div>
+                      </div>
+                    ) : null}
                     <div className="mt-2 sm:flex sm:justify-between">
                       <div className="sm:flex">
                         <div className="mr-6 flex items-center text-sm leading-5 text-gray-500">

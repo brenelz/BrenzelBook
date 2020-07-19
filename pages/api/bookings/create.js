@@ -29,6 +29,7 @@ const QUERY_GET_SELLER_BY_SLUG = gql`
     sellers(where: { slug: { _eq: $slug } }) {
       id
       cost
+      valid_booking_endpoint
     }
   }
 `;
@@ -64,6 +65,23 @@ export default async (req, res) => {
     return res
       .status(200)
       .json({ success: false, message: "Already booked. Please try again." });
+  }
+
+  if (sellers[0].valid_booking_endpoint != null) {
+    try {
+      const validBookingResult = await fetch(
+        sellers[0].valid_booking_endpoint + `?datetime=${datetime}`
+      );
+      const validBookingJson = await validBookingResult.json();
+      if (validBookingJson.valid_booking === false) {
+        return res.status(200).json({
+          success: false,
+          message: "Already booked. Please try again.",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const result = await hasuraAdminRequest(MUTATION_INSERT_BOOKING, {

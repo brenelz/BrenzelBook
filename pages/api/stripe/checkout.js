@@ -40,7 +40,7 @@ export default async (req, res) => {
         customer_email: json.customer_email,
         client_reference_id: booking.id,
         payment_intent_data: {
-          application_fee_amount: booking.seller.cost / 100,
+          application_fee_amount: booking.seller.cost * 0.01,
         },
         success_url:
           process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT +

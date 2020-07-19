@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 
-const MakeBookingForm = ({ slug, user, stripeUserId }) => {
+const MakeBookingForm = ({ slug, user, stripeUserId, hours }) => {
   if (stripeUserId == null) {
     return (
       <p className="bg-red-100 p-2">Unable to make a booking at this time.</p>
     );
   }
+
+  const startTime = hours.split("-")[0];
+  const endTime = hours.split("-")[1];
+
   const [month, setMonth] = useState("07");
   const [day, setDay] = useState("01");
   const [year, setYear] = useState("2020");
-  const [time, setTime] = useState("0:00");
+  const [time, setTime] = useState(startTime + ":00");
   const [disabled, setDisabled] = useState(false);
   const [error, setError] = useState("");
 
@@ -59,7 +63,8 @@ const MakeBookingForm = ({ slug, user, stripeUserId }) => {
 
   let timeoptions = [];
   for (let i = 0; i < 24; i++) {
-    timeoptions.push(<option>{i}:00</option>);
+    const disabled = i < startTime || i > endTime;
+    timeoptions.push(<option disabled={disabled}>{i}:00</option>);
   }
 
   let dayoptions = [];

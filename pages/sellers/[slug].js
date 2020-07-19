@@ -14,6 +14,7 @@ export const QUERY_SELLER_DETAILS = gql`
       email
       cost
       stripe_user_id
+      hours
     }
   }
 `;
@@ -87,6 +88,7 @@ const Sellers = () => {
               slug={slug}
               user={user}
               stripeUserId={res.data?.sellers[0].stripe_user_id}
+              hours={seller.hours}
             />
           )}
           <h2 className="mt-6 text-md leading-9 font-extrabold tracking-tight text-gray-900">

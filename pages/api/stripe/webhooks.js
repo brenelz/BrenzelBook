@@ -62,7 +62,7 @@ export default async (req, res) => {
       const message = `A new booking has been made on BrenzelBook.<br /><br />${result.update_bookings_by_pk.user.name} at ${result.update_bookings_by_pk.datetime}`;
 
       const msg = {
-        to: "brenleydueck@gmail.com",
+        to: result.update_bookings_by_pk.seller.email,
         from: "brenelz@gmail.com",
         subject: `BrenzelBook Booking for ${result.update_bookings_by_pk.seller.name}`,
         text: message,

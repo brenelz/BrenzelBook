@@ -16,7 +16,7 @@ export default (req, res) => {
     })
     .then(
       (response) => {
-        saveAccountId(response, state);
+        await saveAccountId(response, state);
 
         res.writeHead(302, {
           Location: process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT + "/dashboard",

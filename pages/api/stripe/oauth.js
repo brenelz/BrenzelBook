@@ -1,12 +1,12 @@
 import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 import gql from "graphql-tag";
 
-export default (req, res) => {
+export default async (req, res) => {
   const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
   const { code, state } = req.query;
 
-  saveAccountId("test123", "brenleydueck@gmail.com");
+  await saveAccountId("test123", "brenleydueck@gmail.com");
 
   res.status(200).json({ success: state });
   res.end();

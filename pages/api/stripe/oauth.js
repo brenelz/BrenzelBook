@@ -16,7 +16,7 @@ export default (req, res) => {
     })
     .then(
       (response) => {
-        await saveAccountId(response, state);
+        saveAccountId(response, state);
 
         res.writeHead(302, {
           Location: process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT + "/dashboard",
@@ -47,6 +47,8 @@ const saveAccountId = async (response, email) => {
       }
     }
   `;
+
+  console.log({ id, email });
 
   await hasuraAdminRequest(MUTATION_UPDATE_SELLER_STRIPE_USER_ID, {
     id,

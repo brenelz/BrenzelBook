@@ -10,7 +10,6 @@ export default async (req, res) => {
       from: "brenelz@gmail.com",
       subject: `BrenzelBook Contact Form (${firstName} ${lastName}) - ${email}`,
       text: message,
-      html: message,
     };
     await sgMail.send(msg);
   } catch (error) {

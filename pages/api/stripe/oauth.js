@@ -26,10 +26,11 @@ export default (req, res) => {
           res.end();
         }
 
-        res.writeHead(302, {
+        /*res.writeHead(302, {
           Location: process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT + "/dashboard",
         });
         res.end();
+        */
       },
       (err) => {
         if (err.type === "StripeInvalidGrantError") {
@@ -56,8 +57,6 @@ const saveAccountId = async (response, email) => {
     }
   `;
 
-  return false;
-
   const result = await hasuraAdminRequest(
     MUTATION_UPDATE_SELLER_STRIPE_USER_ID,
     {
@@ -65,6 +64,8 @@ const saveAccountId = async (response, email) => {
       email,
     }
   );
+
+  return false;
 
   if (result.update_sellers.affected_rows != 1) {
     return false;

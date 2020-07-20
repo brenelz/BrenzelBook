@@ -6,7 +6,10 @@ export default (req, res) => {
 
   const { code, state } = req.query;
 
-  const email = decodeURIComponent(state);
+  saveAccountId("test123", state);
+
+  res.status(200).json({ success: true });
+  res.end();
 
   var error;
 
@@ -18,19 +21,13 @@ export default (req, res) => {
     })
     .then(
       (response) => {
-        const savedSuccess = saveAccountId(response, email);
-        if (!savedSuccess) {
-          res
-            .status(500)
-            .json({ error: "Unable to save stripe details for " + email });
-          res.end();
-        }
+        var id = response.stripe_user_id;
+        saveAccountId(id, state);
 
-        /*res.writeHead(302, {
+        res.writeHead(302, {
           Location: process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT + "/dashboard",
         });
         res.end();
-        */
       },
       (err) => {
         if (err.type === "StripeInvalidGrantError") {
@@ -44,8 +41,7 @@ export default (req, res) => {
     );
 };
 
-const saveAccountId = async (response, email) => {
-  var id = response.stripe_user_id;
+const saveAccountId = async (id, email) => {
   const MUTATION_UPDATE_SELLER_STRIPE_USER_ID = gql`
     mutation($id: String!, $email: String!) {
       update_sellers(
@@ -57,19 +53,8 @@ const saveAccountId = async (response, email) => {
     }
   `;
 
-  const result = await hasuraAdminRequest(
-    MUTATION_UPDATE_SELLER_STRIPE_USER_ID,
-    {
-      id,
-      email,
-    }
-  );
-
-  return false;
-
-  if (result.update_sellers.affected_rows != 1) {
-    return false;
-  }
-
-  return true;
+  await hasuraAdminRequest(MUTATION_UPDATE_SELLER_STRIPE_USER_ID, {
+    id,
+    email,
+  });
 };

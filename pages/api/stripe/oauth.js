@@ -6,9 +6,9 @@ export default (req, res) => {
 
   const { code, state } = req.query;
 
-  saveAccountId("test123", state);
+  saveAccountId("test123", "brenleydueck@gmail.com");
 
-  res.status(200).json({ success: true });
+  res.status(200).json({ success: state });
   res.end();
 
   var error;

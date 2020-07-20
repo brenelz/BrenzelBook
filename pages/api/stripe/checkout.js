@@ -38,7 +38,7 @@ export default async (req, res) => {
           },
         ],
         customer_email: json.customer_email,
-        client_reference_id: booking.id,
+        client_reference_id: booking_id,
         payment_intent_data: {
           application_fee_amount: booking.seller.cost * 0.01,
         },

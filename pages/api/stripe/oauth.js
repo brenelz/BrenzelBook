@@ -6,6 +6,8 @@ export default (req, res) => {
 
   const { code, state } = req.query;
 
+  const email = decodeURIComponent(state);
+
   var error;
 
   // Send the authorization code to Stripe's API.
@@ -16,7 +18,12 @@ export default (req, res) => {
     })
     .then(
       (response) => {
-        saveAccountId(response, state);
+        const savedSuccess = saveAccountId(response, email);
+        if (!savedSuccess) {
+          return res
+            .status(500)
+            .json({ error: "Unable to save stripe details" });
+        }
 
         res.writeHead(302, {
           Location: process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT + "/dashboard",
@@ -48,10 +55,17 @@ const saveAccountId = async (response, email) => {
     }
   `;
 
-  console.log({ id, email });
+  const result = await hasuraAdminRequest(
+    MUTATION_UPDATE_SELLER_STRIPE_USER_ID,
+    {
+      id,
+      email,
+    }
+  );
 
-  await hasuraAdminRequest(MUTATION_UPDATE_SELLER_STRIPE_USER_ID, {
-    id,
-    email,
-  });
+  if (result.update_sellers.affected_rows != 1) {
+    return false;
+  }
+
+  return true;
 };

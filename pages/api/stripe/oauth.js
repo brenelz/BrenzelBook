@@ -20,9 +20,10 @@ export default (req, res) => {
       (response) => {
         const savedSuccess = saveAccountId(response, email);
         if (!savedSuccess) {
-          return res
+          res
             .status(500)
             .json({ error: "Unable to save stripe details for " + email });
+          res.end();
         }
 
         res.writeHead(302, {

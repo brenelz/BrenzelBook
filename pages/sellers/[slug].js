@@ -76,7 +76,6 @@ const Sellers = () => {
           <h2 className="text-md leading-9 font-extrabold tracking-tight text-gray-900">
             Make a Booking
           </h2>
-          <p className="bg-yellow-100 p-2 mb-4">Currently in test mode</p>
           {!user ? (
             <p>
               <Link href="/api/login">

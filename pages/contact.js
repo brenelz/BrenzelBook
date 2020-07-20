@@ -23,7 +23,7 @@ const Contact = () => {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      res.status === 200 ? alert("Successfully send email") : "";
+      res.status === 200 ? alert("Successfully sent email") : "";
     });
   };
 

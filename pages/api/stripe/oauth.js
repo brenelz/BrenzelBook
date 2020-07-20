@@ -6,11 +6,6 @@ export default async (req, res) => {
 
   const { code, state } = req.query;
 
-  await saveAccountId("test123", "brenleydueck@gmail.com");
-
-  res.status(200).json({ success: state });
-  res.end();
-
   var error;
 
   // Send the authorization code to Stripe's API.
@@ -20,9 +15,9 @@ export default async (req, res) => {
       code,
     })
     .then(
-      (response) => {
+      async (response) => {
         var id = response.stripe_user_id;
-        saveAccountId(id, state);
+        await saveAccountId(id, state);
 
         res.writeHead(302, {
           Location: process.env.NEXT_PUBLIC_FRONTEND_ENDPOINT + "/dashboard",

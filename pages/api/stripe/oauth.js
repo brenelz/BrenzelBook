@@ -22,7 +22,7 @@ export default (req, res) => {
         if (!savedSuccess) {
           return res
             .status(500)
-            .json({ error: "Unable to save stripe details" });
+            .json({ error: "Unable to save stripe details for " + email });
         }
 
         res.writeHead(302, {
@@ -54,6 +54,8 @@ const saveAccountId = async (response, email) => {
       }
     }
   `;
+
+  return false;
 
   const result = await hasuraAdminRequest(
     MUTATION_UPDATE_SELLER_STRIPE_USER_ID,

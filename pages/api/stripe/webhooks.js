@@ -61,14 +61,18 @@ export default async (req, res) => {
 
       const message = `A new booking has been made on BrenzelBook.<br /><br />${result.update_bookings_by_pk.user.name} at ${result.update_bookings_by_pk.datetime}`;
 
-      const msg = {
-        to: result.update_bookings_by_pk.seller.email,
-        from: "brenelz@gmail.com",
-        subject: `BrenzelBook Booking for ${result.update_bookings_by_pk.seller.name}`,
-        text: message,
-        html: message,
-      };
-      sgMail.send(msg);
+      try {
+        const msg = {
+          to: result.update_bookings_by_pk.seller.email,
+          from: "brenelz@gmail.com",
+          subject: `BrenzelBook Booking for ${result.update_bookings_by_pk.seller.name}`,
+          text: message,
+          html: message,
+        };
+        await sgMail.send(msg);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     // Return a response to acknowledge receipt of the event

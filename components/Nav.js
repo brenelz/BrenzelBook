@@ -21,7 +21,7 @@ const Nav = () => {
                   <Link href="/dashboard">
                     <a
                       href="#"
-                      className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 focus:outline-none focus:text-white focus:outline-none focus:text-white focus:bg-gray-700"
+                      className="px-2 py-2 rounded-md text-xs font-medium text-gray-300 focus:outline-none focus:text-white focus:outline-none focus:text-white focus:bg-gray-700"
                     >
                       Dashboard
                     </a>
@@ -30,7 +30,7 @@ const Nav = () => {
                   <Link href="/api/login">
                     <a
                       href="#"
-                      className="px-3 py-2 rounded-md text-sm font-medium text-gray-300 focus:outline-none focus:text-white focus:outline-none focus:text-white focus:bg-gray-700"
+                      className="px-2 py-2 rounded-md text-xs font-medium text-gray-300 focus:outline-none focus:text-white focus:outline-none focus:text-white focus:bg-gray-700"
                     >
                       Login / Signup
                     </a>
@@ -38,12 +38,12 @@ const Nav = () => {
                 )}
 
                 <Link href="/sellers">
-                  <a className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+                  <a className="ml-2 px-2 py-2 rounded-md text-xs font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
                     Sellers
                   </a>
                 </Link>
                 <Link href="/contact">
-                  <a className="ml-4 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+                  <a className="ml-2 px-2 py-2 rounded-md text-xs font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
                     Contact
                   </a>
                 </Link>

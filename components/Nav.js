@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useUser } from "../../utils/user";
+import { useUser } from "../utils/user";
 
 const Nav = () => {
   const { user } = useUser();

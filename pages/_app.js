@@ -1,6 +1,6 @@
 import { Provider } from "urql";
 
-import PageLayout from "../layouts/PageLayout";
+import PageLayout from "../components/PageLayout";
 import hasuraClient from "../utils/hasuraRequest";
 import { UserProvider, useFetchUser } from "../utils/user";
 

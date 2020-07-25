@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import Nav from "../components/Nav";
+import Nav from "./components/Nav";
 import { SITE_CONFIG } from "../config";
 
 const PageLayout = ({ children }) => {

@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-import SellersCell from "../../components/SellersCell";
+import SellersCell from "../../cells/SellersCell";
 
 const Sellers = () => {
   return (

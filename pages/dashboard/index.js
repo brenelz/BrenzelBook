@@ -2,7 +2,7 @@ import Link from "next/link";
 import Head from "next/head";
 
 import { useUser } from "../../utils/user";
-import UserBookingsCell from "../../components/UserBookingsCell";
+import UserBookingsCell from "../../cells/UserBookingsCell";
 
 const Dashboard = () => {
   const { user } = useUser();

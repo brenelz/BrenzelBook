@@ -6,6 +6,7 @@ const Contact = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [status, setStatus] = useState("");
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ const Contact = () => {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      res.status === 200 ? alert("Successfully sent email") : "";
+      res.status === 200 ? setStatus("success") : setStatus("error");
     });
   };
 
@@ -120,6 +121,16 @@ const Contact = () => {
                   </button>
                 </span>
               </div>
+              {status === "success" && (
+                <div className="sm:col-span-2">
+                  <p class="bg-green-100 p-2">Email sent successfully!</p>
+                </div>
+              )}
+              {status === "error" && (
+                <div className="sm:col-span-2">
+                  <p class="bg-red-100 p-2">An Error Occured</p>
+                </div>
+              )}
             </form>
           </div>
         </div>

@@ -5,7 +5,7 @@ import gql from "graphql-tag";
 import { useQuery } from "urql";
 
 import { useUser } from "../../utils/user";
-import SellerBookingsCell from "../../components/SellerBookingsCell";
+import SellerBookingsCell from "../../cells/SellerBookingsCell";
 import MakeBookingForm from "../../components/MakeBookingForm";
 
 export const QUERY_SELLER_DETAILS = gql`

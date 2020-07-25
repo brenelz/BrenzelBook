@@ -115,7 +115,7 @@ const Sellers = ({ seller }) => {
               <MakeBookingForm
                 slug={slug}
                 user={user}
-                stripeUserId={res.data?.sellers[0].stripe_user_id}
+                stripeUserId={seller.stripe_user_id}
                 hours={seller.hours}
               />
             )}

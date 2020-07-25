@@ -1,11 +1,18 @@
 import Link from "next/link";
 import Head from "next/head";
+import gql from "graphql-tag";
+import { useQuery } from "urql";
 
 import { useUser } from "../../utils/user";
 import UserBookingsCell from "../../cells/UserBookingsCell";
+import IsSellerCell from "../../cells/IsSellerCell";
 
 const Dashboard = () => {
   const { user } = useUser();
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <>
@@ -45,10 +52,8 @@ const Dashboard = () => {
                 <h2 className="text-md leading-9 font-extrabold tracking-tight text-gray-900">
                   Your Bookings
                 </h2>
-                <UserBookingsCell
-                  userId={user.user.sub}
-                  email={user.user.name}
-                />
+                <UserBookingsCell userId={user.user.sub} />
+                <IsSellerCell userId={user.user.sub} />
               </div>
             )}
           </div>

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useQuery } from "urql";
 import gql from "graphql-tag";
 
@@ -20,18 +19,6 @@ export const QUERY_USER_BOOKINGS = gql`
   }
 `;
 
-export const QUERY_IS_SELLER = gql`
-  query($user_id: String!) {
-    users(where: { id: { _eq: $user_id } }) {
-      seller_id
-      seller {
-        email
-        stripe_user_id
-      }
-    }
-  }
-`;
-
 const UserBookingsCell = ({ userId }) => {
   const [res, _] = useQuery({
     query: QUERY_USER_BOOKINGS,
@@ -40,35 +27,8 @@ const UserBookingsCell = ({ userId }) => {
     },
   });
 
-  const [resIsSeller, _2] = useQuery({
-    query: QUERY_IS_SELLER,
-    variables: {
-      user_id: userId,
-    },
-  });
-
-  const isSeller = resIsSeller.data?.users[0].seller_id !== null;
-
   if (res.fetching) return <p>Loading...</p>;
   if (res.error) return <p>Errored!</p>;
-
-  const stripeDiv = resIsSeller.data?.users[0].seller?.stripe_user_id ? (
-    <div className="bg-green-100 p-2">
-      Congrats you are ready to receive payments!
-    </div>
-  ) : (
-    <div>
-      <p className="bg-yellow-100 p-2">
-        You must connect with stripe to receive payments.
-      </p>
-      <a
-        className="mt-4 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150"
-        href={`https://connect.stripe.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_STRIPE_CLIENT_ID}&state=${resIsSeller.data?.users[0].seller?.email}&scope=read_write&response_type=code&stripe_user[email]=${resIsSeller.data?.users[0].seller?.email}`}
-      >
-        <span>Connect with Stripe</span>
-      </a>
-    </div>
-  );
 
   function appendLeadingZeroes(n) {
     if (n <= 9) {
@@ -127,20 +87,6 @@ const UserBookingsCell = ({ userId }) => {
           <p>No Bookings for your user is found.</p>
         )}
       </ul>
-      <p className="mt-4">
-        {isSeller ? (
-          stripeDiv
-        ) : (
-          <Link href="/contact">
-            <a
-              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:border-gray-700 focus:shadow-outline-gray active:bg-gray-700 transition ease-in-out duration-150"
-              href="#"
-            >
-              Contact to become a seller
-            </a>
-          </Link>
-        )}
-      </p>
     </div>
   );
 };

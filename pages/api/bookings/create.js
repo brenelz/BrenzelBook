@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+
 import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 
 const MUTATION_INSERT_BOOKING = gql`

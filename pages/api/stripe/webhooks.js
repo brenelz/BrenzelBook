@@ -1,6 +1,8 @@
 import { buffer } from "micro";
-import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 import gql from "graphql-tag";
+
+import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
+
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API);
 

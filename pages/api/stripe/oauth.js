@@ -1,5 +1,6 @@
-import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 import gql from "graphql-tag";
+
+import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 
 export default async (req, res) => {
   const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);

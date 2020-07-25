@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+
 import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 
 export const QUERY_SELLER_BOOKINGS = gql`

@@ -1,7 +1,7 @@
 import { Provider } from "urql";
 
 import PageLayout from "../layouts/PageLayout";
-import client from "../utils/graphqlClient";
+import hasuraClient from "../utils/hasuraRequest";
 import { UserProvider, useFetchUser } from "../utils/user";
 
 import "../styles/tailwind.css";
@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }) {
   const { user, loading } = useFetchUser();
 
   if (user) {
-    client.fetchOptions = () => {
+    hasuraClient.fetchOptions = () => {
       return user && user.idToken
         ? {
             headers: { Authorization: `Bearer ${user.idToken}` },
@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <UserProvider value={{ user, loading }}>
-      <Provider value={client}>
+      <Provider value={hasuraClient}>
         <PageLayout>
           <Component {...pageProps} />
         </PageLayout>

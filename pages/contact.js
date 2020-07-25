@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Head from "next/head";
+
 const Contact = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -29,6 +31,9 @@ const Contact = () => {
 
   return (
     <>
+      <Head>
+        <title>Contact | BrenzelBook</title>
+      </Head>
       <div className="bg-white py-8 px-4 overflow-hidden">
         <div className="relative max-w-xl mx-auto">
           <div className="text-center">

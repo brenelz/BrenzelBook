@@ -1,5 +1,6 @@
-import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 import gql from "graphql-tag";
+
+import hasuraAdminRequest from "../../../utils/hasuraAdminRequest";
 
 export const QUERY_BOOKING_BY_ID = gql`
   query($id: Int!) {

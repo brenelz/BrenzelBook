@@ -1,11 +1,18 @@
+import Head from "next/head";
+
 import Nav from "../components/Nav";
+import { SITE_CONFIG } from "../config";
 
 const PageLayout = ({ children }) => {
   return (
-    <div>
+    <>
+      <Head>
+        <title>{SITE_CONFIG.title}</title>
+        <meta name="description" content={SITE_CONFIG.description} />
+      </Head>
       <Nav />
       {children}
-    </div>
+    </>
   );
 };
 

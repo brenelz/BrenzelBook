@@ -13,7 +13,6 @@
   "license": "ISC",
   "dependencies": {
     "@auth0/nextjs-auth0": "^0.13.0",
-    "@babel/runtime": "^7.10.4",
     "@sendgrid/mail": "^7.2.1",
     "@stripe/stripe-js": "^1.8.0",
     "@tailwindcss/ui": "^0.3.1",
@@ -22,7 +21,6 @@
     "graphql-tag": "^2.10.3",
     "isomorphic-unfetch": "^3.0.0",
     "micro": "^9.3.4",
-    "moment": "^2.27.0",
     "next": "^9.4.4",
     "postcss-import": "^12.0.1",
     "react": "^16.13.1",

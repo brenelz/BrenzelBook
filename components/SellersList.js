@@ -1,34 +1,11 @@
 import Link from "next/link";
-import { useQuery } from "urql";
-import gql from "graphql-tag";
 
-export const QUERY_ALL_SELLERS = gql`
-  query {
-    sellers {
-      id
-      name
-      email
-      cost
-      slug
-      description
-      email_visible
-    }
-  }
-`;
-
-const SellersCell = () => {
-  const [res, _] = useQuery({
-    query: QUERY_ALL_SELLERS,
-  });
-
-  if (res.fetching) return <p>Loading...</p>;
-  if (res.error) return <p>Errored!</p>;
-
+const SellersList = ({ sellers }) => {
   return (
     <>
-      {res.data.sellers.length > 0 ? (
+      {sellers.length > 0 ? (
         <ul>
-          {res.data.sellers.map((seller) => (
+          {sellers.map((seller) => (
             <li key={seller.id}>
               <Link href="/sellers/[slug]" as={`/sellers/${seller.slug}`}>
                 <a className="block hover:bg-gray-50 focus:outline-none focus:bg-gray-50 transition duration-150 ease-in-out">
@@ -82,4 +59,4 @@ const SellersCell = () => {
   );
 };
 
-export default SellersCell;
+export default SellersList;

@@ -1,7 +1,5 @@
 import Link from "next/link";
 import Head from "next/head";
-import gql from "graphql-tag";
-import { useQuery } from "urql";
 
 import { useUser } from "../../utils/user";
 import UserBookingsCell from "../../cells/UserBookingsCell";

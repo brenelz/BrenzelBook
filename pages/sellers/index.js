@@ -1,8 +1,34 @@
 import Head from "next/head";
+import gql from "graphql-tag";
 
-import SellersCell from "../../cells/SellersCell";
+import hasuraAdminRequest from "../../utils/hasuraAdminRequest";
+import SellersList from "../../components/SellersList";
 
-const Sellers = () => {
+export const QUERY_ALL_SELLERS = gql`
+  query {
+    sellers {
+      id
+      name
+      email
+      cost
+      slug
+      description
+      email_visible
+    }
+  }
+`;
+
+export async function getStaticProps() {
+  const { sellers } = await hasuraAdminRequest(QUERY_ALL_SELLERS);
+
+  return {
+    props: {
+      sellers,
+    },
+  };
+}
+
+const Sellers = ({ sellers }) => {
   return (
     <>
       <Head>
@@ -21,7 +47,8 @@ const Sellers = () => {
             </p>
           </div>
           <div className="mt-4">
-            <SellersCell />
+            {/* <SellersCell /> */}
+            <SellersList sellers={sellers} />
           </div>
         </div>
       </div>

@@ -2,11 +2,19 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
 import gql from "graphql-tag";
-import { useQuery } from "urql";
 
+import hasuraAdminRequest from "../../utils/hasuraAdminRequest";
 import { useUser } from "../../utils/user";
 import SellerBookingsCell from "../../cells/SellerBookingsCell";
 import MakeBookingForm from "../../components/MakeBookingForm";
+
+export const QUERY_ALL_SELLERS_SLUGS = gql`
+  query {
+    sellers {
+      slug
+    }
+  }
+`;
 
 export const QUERY_SELLER_DETAILS = gql`
   query($slug: String!) {
@@ -23,22 +31,36 @@ export const QUERY_SELLER_DETAILS = gql`
   }
 `;
 
-const Sellers = () => {
+export async function getStaticProps({ params }) {
+  const { sellers } = await hasuraAdminRequest(QUERY_SELLER_DETAILS, {
+    slug: params.slug,
+  });
+
+  return {
+    props: {
+      seller: sellers[0],
+    },
+  };
+}
+
+export async function getStaticPaths() {
+  const { sellers } = await hasuraAdminRequest(QUERY_ALL_SELLERS_SLUGS);
+
+  const paths = sellers.map((seller) => {
+    return { params: { slug: seller.slug } };
+  });
+
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+const Sellers = ({ seller }) => {
   const router = useRouter();
   const { slug } = router.query;
 
   const { user, loading } = useUser();
-  const [res, _] = useQuery({
-    query: QUERY_SELLER_DETAILS,
-    variables: {
-      slug,
-    },
-  });
-
-  const seller = res.data?.sellers[0];
-  if (!seller) {
-    return null;
-  }
 
   return (
     <>
